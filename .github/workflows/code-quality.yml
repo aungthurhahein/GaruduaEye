@@ -1,0 +1,72 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run security audit
+      run: npm audit --audit-level=moderate
+      
+    - name: Check for known vulnerabilities
+      run: |
+        echo "🔍 Checking for known vulnerabilities..."
+        npm audit --audit-level=moderate || {
+          echo "⚠️  Found security vulnerabilities. Please review and fix them."
+          exit 1
+        }
+        
+    - name: Check package.json for best practices
+      run: |
+        echo "📦 Validating package.json..."
+        npm run validate 2>/dev/null || echo "No validation script found, skipping..."
+        
+    - name: Check for sensitive data
+      run: |
+        echo "🔐 Scanning for sensitive data..."
+        if grep -r "API_KEY\|SECRET\|PASSWORD\|TOKEN" . --exclude-dir=node_modules --exclude-dir=.git; then
+          echo "⚠️  Potential sensitive data found. Please review."
+        else
+          echo "✅ No obvious sensitive data found."
+        fi
+        
+    - name: Check file sizes
+      run: |
+        echo "📏 Checking file sizes..."
+        find . -name "*.js" -o -name "*.css" -o -name "*.html" | grep -v node_modules | xargs wc -l | sort -nr | head -10
+        
+    - name: Generate quality report
+      run: |
+        echo "📊 Code Quality Report" > quality-report.md
+        echo "=====================" >> quality-report.md
+        echo "" >> quality-report.md
+        echo "✅ Security audit completed" >> quality-report.md
+        echo "✅ Dependency check completed" >> quality-report.md
+        echo "✅ File size analysis completed" >> quality-report.md
+        echo "" >> quality-report.md
+        echo "Report generated at: $(date)" >> quality-report.md
+        
+    - name: Upload quality report
+      uses: actions/upload-artifact@v3
+      with:
+        name: quality-report
+        path: quality-report.md

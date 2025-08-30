@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THB to USD Exchange Rate Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>THB to USD Exchange Rate Monitor</h1>
+            <p>Investment-focused currency tracking with alerts</p>
+        </header>
+
+        <main>
+            <!-- Current Rate Section -->
+            <section class="current-rate">
+                <div class="rate-card">
+                    <h2>Current Rate</h2>
+                    <div class="rate-display">
+                        <span class="rate-value" id="currentRate">Loading...</span>
+                        <span class="rate-unit">USD per THB</span>
+                    </div>
+                    <div class="rate-change" id="rateChange">
+                        <span class="change-value">--</span>
+                        <span class="change-percent">--</span>
+                    </div>
+                    <div class="last-updated" id="lastUpdated">Last updated: --</div>
+                </div>
+            </section>
+
+            <!-- Investment Recommendation -->
+            <section class="investment-recommendation">
+                <div class="recommendation-card" id="recommendationCard">
+                    <h3>Investment Recommendation</h3>
+                    <div class="recommendation-content" id="recommendationContent">
+                        <p>Analyzing current market conditions...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Historical Chart -->
+            <section class="chart-section">
+                <h2>Historical Performance</h2>
+                <div class="chart-controls">
+                    <button class="time-btn active" data-period="7d">7 Days</button>
+                    <button class="time-btn" data-period="30d">30 Days</button>
+                    <button class="time-btn" data-period="90d">90 Days</button>
+                    <button class="time-btn" data-period="1y">1 Year</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="rateChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Trend Analysis -->
+            <section class="trend-analysis">
+                <h2>Trend Analysis & Projection</h2>
+                <div class="trend-grid">
+                    <div class="trend-card">
+                        <h4>7-Day Trend</h4>
+                        <div class="trend-value" id="trend7d">--</div>
+                        <div class="trend-indicator" id="indicator7d"></div>
+                    </div>
+                    <div class="trend-card">
+                        <h4>30-Day Trend</h4>
+                        <div class="trend-value" id="trend30d">--</div>
+                        <div class="trend-indicator" id="indicator30d"></div>
+                    </div>
+                    <div class="trend-card">
+                        <h4>Volatility</h4>
+                        <div class="trend-value" id="volatility">--</div>
+                        <div class="trend-indicator" id="volatilityIndicator"></div>
+                    </div>
+                    <div class="trend-card">
+                        <h4>Next Week Projection</h4>
+                        <div class="trend-value" id="projection">--</div>
+                        <div class="trend-indicator" id="projectionIndicator"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SMS Alert Setup -->
+            <section class="alert-section">
+                <h2>SMS Alert Settings</h2>
+                <div class="alert-card">
+                    <div class="alert-form">
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="tel" id="phoneNumber" placeholder="+66812345678" />
+                        </div>
+                        <div class="form-group">
+                            <label for="alertThreshold">Alert when THB strengthens to:</label>
+                            <input type="number" id="alertThreshold" step="0.0001" placeholder="0.0280" />
+                            <span class="input-help">USD per THB</span>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="enableAlerts" />
+                                Enable SMS Alerts
+                            </label>
+                        </div>
+                        <button id="saveAlertSettings" class="btn-primary">Save Alert Settings</button>
+                    </div>
+                    <div class="alert-status" id="alertStatus">
+                        <p>SMS alerts are currently disabled</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Market Insights -->
+            <section class="insights-section">
+                <h2>Market Insights</h2>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>Best Investment Opportunities</h4>
+                        <div id="bestOpportunities">
+                            <p>Analyzing historical patterns...</p>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Risk Assessment</h4>
+                        <div id="riskAssessment">
+                            <p>Calculating risk metrics...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Data provided by exchange rate APIs. For investment purposes only.</p>
+            <p>Last data refresh: <span id="dataRefresh">--</span></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
